@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Inventario</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" id="clientesLink" href="#">Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="productosLink" href="#">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="proveedoresLink" href="#">Proveedores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="ventasLink" href="#">Ventas</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Sección de clientes -->
+        <div id="clientesSection">
+            <h2 class="mb-4">Lista de Clientes</h2>
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#agregarClienteModal">Agregar Cliente</button>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Contacto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="clientesTabla">
+                    <!-- Contenido dinámico -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sección de productos -->
+        <div id="productosSection" class="d-none">
+            <h2 class="mb-4">Lista de Productos</h2>
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#agregarProductoModal">Agregar Producto</button>
+            <div class="form-group">
+                <input type="text" id="buscarProducto" class="form-control" placeholder="Buscar producto">
+                <button class="btn btn-primary mt-2" id="buscarProductoBtn">Buscar</button>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>ID Proveedor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="productosTabla">
+                    <!-- Contenido dinámico -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sección de proveedores -->
+        <div id="proveedoresSection" class="d-none">
+            <h2 class="mb-4">Lista de Proveedores</h2>
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#agregarProveedorModal">Agregar Proveedor</button>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Contacto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="proveedoresTabla">
+                    <!-- Contenido dinámico -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sección de ventas -->
+        <div id="ventasSection" class="d-none">
+            <h2 class="mb-4">Lista de Ventas</h2>
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#agregarVentaModal">Agregar Venta</button>
+            <div class="form-group">
+                <input type="date" id="buscarFecha" class="form-control" placeholder="Buscar por fecha">
+                <button class="btn btn-primary mt-2" id="buscarFechaBtn">Buscar</button>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Producto</th>
+                        <th>ID Cliente</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="ventasTabla">
+                    <!-- Contenido dinámico -->
+                </tbody>
+            </table>
+            <h2 class="mb-4">Generar Informe</h2>
+            <div class="form-group">
+                <input type="date" id="fechaInicio" class="form-control" placeholder="Fecha de inicio">
+                <input type="date" id="fechaFin" class="form-control mt-2" placeholder="Fecha de fin">
+                <button class="btn btn-primary mt-2" id="generarInformeBtn">Generar Informe</button>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID Producto</th>
+                        <th>Total Vendido</th>
+                    </tr>
+                </thead>
+                <tbody id="informeTabla">
+                    <!-- Contenido dinámico -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para agregar cliente -->
+    <div class="modal fade" id="agregarClienteModal" tabindex="-1" role="dialog" aria-labelledby="agregarClienteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarClienteModalLabel">Agregar Cliente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="agregarClienteForm">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contacto">Contacto</label>
+                            <input type="text" class="form-control" id="contacto" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para modificar cliente -->
+    <div class="modal fade" id="modificarClienteModal" tabindex="-1" role="dialog" aria-labelledby="modificarClienteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modificarClienteModalLabel">Modificar Cliente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="modificarClienteForm">
+                        <input type="hidden" id="modificarClienteId">
+                        <div class="form-group">
+                            <label for="modificarNombre">Nombre</label>
+                            <input type="text" class="form-control" id="modificarNombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modificarContacto">Contacto</label>
+                            <input type="text" class="form-control" id="modificarContacto" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar producto -->
+    <div class="modal fade" id="agregarProductoModal" tabindex="-1" role="dialog" aria-labelledby="agregarProductoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarProductoModalLabel">Agregar Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="agregarProductoForm">
+                        <div class="form-group">
+                            <label for="nombreProducto">Nombre</label>
+                            <input type="text" class="form-control" id="nombreProducto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoriaProducto">Categoría</label>
+                            <input type="text" class="form-control" id="categoriaProducto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="precioProducto">Precio</label>
+                            <input type="number" class="form-control" id="precioProducto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidadProducto">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidadProducto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="proveedorProducto">ID Proveedor</label>
+                            <input type="number" class="form-control" id="proveedorProducto" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para modificar producto -->
+    <div class="modal fade" id="modificarProductoModal" tabindex="-1" role="dialog" aria-labelledby="modificarProductoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modificarProductoModalLabel">Modificar Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="modificarProductoForm">
+                        <input type="hidden" id="modificarProductoId">
+                        <div class="form-group">
+                            <label for="modificarNombreProducto">Nombre</label>
+                            <input type="text" class="form-control" id="modificarNombreProducto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modificarCategoriaProducto">Categoría</label>
+                            <input type="text" class="form-control" id="modificarCategoriaProducto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modificarPrecioProducto">Precio</label>
+                            <input type="number" class="form-control" id="modificarPrecioProducto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modificarCantidadProducto">Cantidad</label>
+                            <input type="number" class="form-control" id="modificarCantidadProducto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modificarProveedorProducto">ID Proveedor</label>
+                            <input type="number" class="form-control" id="modificarProveedorProducto" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar proveedor -->
+    <div class="modal fade" id="agregarProveedorModal" tabindex="-1" role="dialog" aria-labelledby="agregarProveedorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarProveedorModalLabel">Agregar Proveedor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="agregarProveedorForm">
+                        <div class="form-group">
+                            <label for="nombreProveedor">Nombre</label>
+                            <input type="text" class="form-control" id="nombreProveedor" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactoProveedor">Contacto</label>
+                            <input type="text" class="form-control" id="contactoProveedor" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para modificar proveedor -->
+    <div class="modal fade" id="modificarProveedorModal" tabindex="-1" role="dialog" aria-labelledby="modificarProveedorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modificarProveedorModalLabel">Modificar Proveedor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="modificarProveedorForm">
+                        <input type="hidden" id="modificarProveedorId">
+                        <div class="form-group">
+                            <label for="modificarNombreProveedor">Nombre</label>
+                            <input type="text" class="form-control" id="modificarNombreProveedor" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modificarContactoProveedor">Contacto</label>
+                            <input type="text" class="form-control" id="modificarContactoProveedor" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar venta -->
+    <div class="modal fade" id="agregarVentaModal" tabindex="-1" role="dialog" aria-labelledby="agregarVentaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="agregarVentaModalLabel">Agregar Venta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="agregarVentaForm">
+                        <div class="form-group">
+                            <label for="idProductoVenta">ID Producto</label>
+                            <input type="number" class="form-control" id="idProductoVenta" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="idClienteVenta">ID Cliente</label>
+                            <input type="number" class="form-control" id="idClienteVenta" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidadVenta">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidadVenta" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaVenta">Fecha</label>
+                            <input type="date" class="form-control" id="fechaVenta" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="jss/main.js"></script>
+</body>
+</html>
+
